@@ -3,19 +3,24 @@ const refs = {
   stopBtn: document.querySelector('[data-stop]'),
 }
 
-const randomColor = function getRandomHexColor() {
+ function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, 0)}`;
 }
-document.body.style.backgroundColor = setInterval(randomColor, 1000);
+// document.body.style.backgroundColor = setInterval(randomColor, 1000);
 
-const timerId = setInterval(randomColor, 1000);
+let timerId = null;
 
-refs.startBtn.addEventListener('click', changeColor);
+refs.startBtn.addEventListener('click', startChangeColor); 
 refs.stopBtn.addEventListener('click', stopChangeColor);
 
-function changeColor () {
-  document.body.style.backgroundColor = setInterval(randomColor, 1000);
+function startChangeColor () {
+  timerId = setInterval(changeColor, 1000);
+  document.body.style.backgroundColor = getRandomHexColor();
 }
+function changeColor () {
+  document.body.style.backgroundColor = getRandomHexColor();
+  
+};
 
 function stopChangeColor () {
   clearInterval(timerId);
