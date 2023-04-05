@@ -14,13 +14,10 @@ refs.stopBtn.addEventListener('click', stopChangeColor);
 
 function startChangeColor () {
   timerId = setInterval(changeColor, 1000);
-  document.body.style.backgroundColor = getRandomHexColor();
 }
 function changeColor () {
-  document.body.style.backgroundColor = getRandomHexColor();
-  
+  document.body.style.backgroundColor = getRandomHexColor(); 
 };
-
 function stopChangeColor () {
   clearInterval(timerId);
 }
