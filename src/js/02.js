@@ -7,7 +7,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    // console.log(selectedDates[0]);
+    console.log(selectedDates[0]);
   },
 };
 const myInput = document.getElementById('datetime-picker');
@@ -24,52 +24,68 @@ const refs = {
   label: document.querySelectorAll('.label'),
 };
 
-refs.startBtn.addEventListener('click', countTimer );
+refs.startBtn.addEventListener('click', countTime );
 refs.timer.style.display = 'flex'; 
-refs.value.style. 
+// refs.value.style.display = 'block'; 
+// refs.label.textContent.toUpperCase(); 
+ 
 
-function addLeadingZero(value){
+
+function  addLeadingZero(value) {
   return String(value).padStart(2, '0');
 };
 
-// const plannedDate = fp.selectedDates[0];
-// console.log(plannedDate);
-const plannedDate = new Date('Fri Apr 25 2023 19:57:49 GMT+0300 (Восточная Европа, летнее время)');
+const plannedDate = fp.selectedDates[0];
+console.log(plannedDate);
+// const plannedDate = new Date('Fri Apr 25 2023 19:57:49 GMT+0300 (Восточная Европа, летнее время)');
  
-countTime ();
-function countTimer () {
-  setInterval(countTime, 1000)};
 function countTime () {
-  const now = new Date();
-  const diff = plannedDate - now;
-// console.log(diff);
+  let timerId = setInterval(() => {
+    const now = new Date(myInput.value);
+    console.log(now);
+    const diff =  now - Date.now();
+  // console.log(diff);
+  if(diff < 1000){
+    clearInterval(timerId);
+    updateTimer();
+    return;
+  }
+  const timeDate = convertMs(diff);
+
+  updateTimer (timeDate);}, 1000);
+  
+}
+
+function updateTimer ({ days='00', hours='00', minutes='00', seconds='00' } = {}) {
+
+      refs.days.textContent = days;
+      refs.hours.textContent = hours;
+      refs.minutes.textContent = minutes;
+      refs.seconds.textContent = seconds;
+}
+function convertMs(ms) {
+  // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
 
   // Remaining days
-  // const days = addLeadingZero(Math.floor(diff / day));
-  refs.days.textContent = addLeadingZero(Math.floor(diff / day));
+  const days = addLeadingZero(Math.floor(ms / day));
   // Remaining hours
-  // const hours = addLeadingZero(Math.floor((diff % day) / hour));
-  refs.hours.textContent = addLeadingZero(Math.floor((diff % day) / hour));
-  // // Remaining minutes
-  // const minutes = addLeadingZero(Math.floor(((diff % day) % hour) / minute));
-  refs.minutes.textContent = addLeadingZero(Math.floor(((diff % day) % hour) / minute));
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
+  // Remaining minutes
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  // const seconds = addLeadingZero(Math.floor((((diff % day) % hour) % minute) / second));
-  refs.seconds.textContent = addLeadingZero(Math.floor((((diff % day) % hour) % minute) / second));
-  // console.log(days);
-// const dayTime = days;
-// const hoursTime = '${hours}';
-// const minutesTime = '${minutes}';
-// const secondsTime = '${seconds}';
+  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
+  return { days, hours, minutes, seconds }; 
 }
  
-      // refs.days.textContent = dayTime;
-      // refs.hours.textContent = 10;
-      // refs.minutes.textContent = 15;
-      // refs.seconds.textContent = 20;
-    
+refs.value.forEach((el) => {
+  el.style.color = 'red';
+})
+
+// refs.value.style.color = 'red';
+ 
+    console.log(refs.value)
