@@ -1,18 +1,13 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs ={
-  form: document.querySelector('.form'),
-  firstDelay: document.querySelector('[name="delay"]'),
-  step: document.querySelector('[name="step"]'),
-  amount: document.querySelector('[name="amount"]'),
+  form: document.querySelector('.form'), // в задании написано сабмит по форме
   submitBtn: document.querySelector('button'),
 }
-const position = 1;
 
-refs.submitBtn.addEventListener('submit', createPromise)
+refs.submitBtn.addEventListener('submit', startGeneration)
 
 function createPromise(position, delay) {
-  event.preventDefat()
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
@@ -27,7 +22,7 @@ function createPromise(position, delay) {
    
 
 
-createPromise(position, refs.firstDelay)
+createPromise(position, delay)// ошибка в консоли
   .then(({ position, delay }) => {
     // console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
     Notify.success('✅ Fulfilled promise ${position} in ${delay}ms')
@@ -36,3 +31,16 @@ createPromise(position, refs.firstDelay)
     // console.log(`❌ Rejected promise ${position} in ${delay}ms`);
     Notify.failure('❌ Rejected promise ${position} in ${delay}ms');
   });
+
+  function startGeneration (event){
+    event.preventDefault();
+    const {elements: {delay, step,amount}} = event.currentTarget;// не понятная запись
+    let firstDelay = Number(event.currentTarget.delay.value);
+    let stepDelay = Number(event.currentTarget.step.value);
+    let amountEl = Number(event.currentTarget.amount.value);
+    for(let i = 0; i < amountEl; i += 1){
+      createPromise(i, firstDelay);
+      firstDelay += stepDelay;
+    };
+  };
+ 
