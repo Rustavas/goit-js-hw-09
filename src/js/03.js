@@ -12,6 +12,7 @@ const position = 1;
 refs.submitBtn.addEventListener('submit', createPromise)
 
 function createPromise(position, delay) {
+  event.preventDefat()
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
