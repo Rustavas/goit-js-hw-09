@@ -7,7 +7,10 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    // console.log(selectedDates[0]);
+    console.log(selectedDates[0]);
+    if ((selectedDates[0] - new Date()) < 1000){
+      window.alert("Please choose a date in the future.");
+    }
   },
 };
 const myInput = document.getElementById('datetime-picker');
@@ -24,36 +27,35 @@ const refs = {
   label: document.querySelectorAll('.label'),
 };
 
-refs.startBtn.addEventListener('click', startTimer);
-refs.timer.style.display = 'flex'; 
-
-function addLeadingZero(value){
+refs.startBtn.addEventListener('click', countTime );
+ 
+function  addLeadingZero(value) {
   return String(value).padStart(2, '0');
 };
 
-const timer = {
-  start() {
-    const finishDate = fp.selectedDates[0];
-   
-    setInterval(() => {
-      const now = new Date();
-      const currentTime = finishDate - now;
-      const { days, hours, minutes, seconds } = convertMs(currentTime);
-      const daysTime = convertMs(currentTime);
-       console.log(daysTime);
+function countTime () {
+  let timerId = setInterval(() => {
+    const now = new Date(myInput.value);
+    const diff =  now - Date.now();
+  // console.log(diff);
+  if(diff < 1000){
+    clearInterval(timerId);
+    updateTimer();
+    return;
+  }
+  const timeDate = convertMs(diff);
 
-      refs.days.textContent = daysTime.days;
-      refs.hours.value = daysTime.hours;
-      refs.minutes.value = daysTime.minutes;
-      refs.seconds.value = '${seconds}';
-    }, 1000);
-
-  },
-}
-function startTimer (){
-  timer.start();
+  updateTimer (timeDate);}, 1000);
+  
 }
 
+function updateTimer ({ days='00', hours='00', minutes='00', seconds='00' } = {}) {
+
+      refs.days.textContent = days;
+      refs.hours.textContent = hours;
+      refs.minutes.textContent = minutes;
+      refs.seconds.textContent = seconds;
+}
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -72,4 +74,24 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds }; 
 }
+refs.timer.style.display = 'flex'; 
+refs.field.forEach((el) => {
+  el.style.marginRight = '12px';
+  el.style.verticalAlign = 'middle';
+});
+refs.value.forEach((el) => {
+  el.style.fontFamily = 'Helvetica';
+  el.style.fontSize = '25px';
+  el.style.fontWeight = '500';
+  el.style.display = 'block';
+  el.style.textAlign = "center"; 
  
+})
+refs.label.forEach((el) => {
+  el.style.fontFamily = 'Helvetica';
+  el.style.fontSize = '10px';
+  el.style.textTransform = "uppercase";
+  el.style.display = "block";
+  el.style.textAlign = "center"; 
+})
+
