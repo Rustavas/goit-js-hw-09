@@ -6,24 +6,23 @@ const refs ={
 }
 
 refs.form.addEventListener('submit', startGeneration);
-
+  
 function startGeneration (event){
   event.preventDefault();
-
     let firstDelay = event.currentTarget.elements.delay.value;
     let stepDelay = event.currentTarget.elements.step.value;
     let amountEl = event.currentTarget.elements.amount.value;
 
   for(let i = 1; i <= amountEl; i += 1 ){
-
     createPromise(i, firstDelay)
-  .then(({ position, delay }) => {
-    Notify.success('✅ Fulfilled promise ${position} in ${delay}ms')
-  })
-  .catch(({ position, delay }) => {
-    Notify.failure('❌ Rejected promise ${position} in ${delay}ms');
-  });
+    .then(({ i, firstDelay }) => {
+      Notify.success('✅ Fulfilled promise ${i} in ${firstDelay}ms')
+    })
+    .catch(({ i, firstDelay }) => {
+      Notify.failure('❌ Rejected promise ${i} in ${firstDelay}ms');
+    });
     firstDelay += stepDelay;
+  
   };
 };
 
@@ -39,3 +38,9 @@ function createPromise(position, delay) {
     },delay);
   });
 };
+// createPromise(position, delay).then(({ position, delay }) => {
+//   Notify.success('✅ Fulfilled promise ${position} in ${delay}ms')
+// })
+// .catch(({ position, delay }) => {
+//   Notify.failure('❌ Rejected promise ${position} in ${delay}ms');
+// });
