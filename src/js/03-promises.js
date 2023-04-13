@@ -11,17 +11,17 @@ function startGeneration (event){
   event.preventDefault();
     let firstDelay = Number(event.currentTarget.elements.delay.value);
     console.log(firstDelay)
-    let stepDelay = event.currentTarget.elements.step.value;
+    let stepDelay = Number(event.currentTarget.elements.step.value);
     console.log(stepDelay)
-    let amountEl = event.currentTarget.elements.amount.value;
+    let amountEl = Number(event.currentTarget.elements.amount.value);
 
   for(let i = 1; i <= amountEl; i += 1 ){
     createPromise(i, firstDelay)
-    .then(({ i, firstDelay }) => {
-      Notify.success('✅ Fulfilled promise ${i} in ${firstDelay}ms')
+    .then(({ position, firstDelay }) => {
+      Notify.success(`✅ Fulfilled promise ${position} in ${firstDelay}ms`)
     })
-    .catch(({ i, firstDelay }) => {
-      Notify.failure('❌ Rejected promise ${i} in ${firstDelay}ms');
+    .catch(({ position, firstDelay }) => {
+      Notify.failure(`❌ Rejected promise ${position} in ${firstDelay}ms`);
     });
     firstDelay += stepDelay;
   
