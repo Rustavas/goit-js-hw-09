@@ -9,8 +9,10 @@ refs.form.addEventListener('submit', startGeneration);
   
 function startGeneration (event){
   event.preventDefault();
-    let firstDelay = event.currentTarget.elements.delay.value;
+    let firstDelay = Number(event.currentTarget.elements.delay.value);
+    console.log(firstDelay)
     let stepDelay = event.currentTarget.elements.step.value;
+    console.log(stepDelay)
     let amountEl = event.currentTarget.elements.amount.value;
 
   for(let i = 1; i <= amountEl; i += 1 ){
