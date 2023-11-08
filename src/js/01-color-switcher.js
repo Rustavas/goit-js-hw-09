@@ -7,7 +7,7 @@ stopButton.addEventListener('click', onStop);
 
 function onStart(evt){
   timerId = setInterval( changeColor, 1000);
-  evt.target.removeEventListener('click', onStart)
+  startButton.removeEventListener('click', onStart)
 }
 
 function onStop(evt){
